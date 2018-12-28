@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>注册账号</title>
+	<script src="/static/js/jquery-1.8.2.min.js"></script>
+</head>
+<body>
+	<form action="checkReg" method="post" enctype="multipart/form-data">
+		学号：<input type="text" maxlength="10" name="act" id="act" autocomplete="off" onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();" required> <i id="warn">o</i><br>
+		姓名：<input type="text" name="name" autocomplete="off" required><br>
+		密码：<input type="password" name="pwd1" autocomplete="off" required id="pwd1"> <br>
+		again：<input type="password" name="pwd2" autocomplete="off" required id='pwd2'><br>
+		昵称：<input type="text" name="nick"><br>
+		性别：男<input type="radio" name="sex" value="1">
+		女 <input type="radio" name="sex" value="2"><br>
+		头像：<input type="file" name="icon" required id="icon"><br>
+		所属学院：
+		<select name="institute" id="ins">
+			<option value="0">请选择</option>
+			{volist name="insData" id="insVo"}
+				<option value="{$insVo.id}">{$insVo.title}</option>
+			{/volist}
+		</select>
+		<br>
+		所在班级：
+		<select name="class" id="cls">
+			<option value="0">请选择</option>
+		</select>
+		<br>
+		<input type="button" value="提交" id="sub">
+	</form>
+
+	<script>
+		var actCk = false;
+		var pwdCk = false;
+		var iconCK = false;
+		//二级联动
+		$("#ins").change(function(){
+			//删除标签
+			$(".curCls").remove();
+			var iid = $(this).val();
+			var url = "getClass";
+			//ajax获取 二级联动
+			$.post(url,{iid:iid},function(e){
+				$.each(e,function(i,val){
+					//新增数据,获取班级
+					$("#cls").append("<option class=curCls value="+i+">"+val+"</option>");
+				});
+			})
+		});
+
+		//动态检测账号
+		$("#act").blur(function(){
+			url = "getAct";
+			act = $(this).val();
+			if(act == ''){
+				act = 0;
+			}
+			$.get(url,{act:act},function(e){
+				e = eval("("+e+")");
+				if(e.code == 0) {
+					actCk = false;
+					$("#warn").text(e.msg);
+				} else {
+					actCk = true;
+					$("#warn").text("√");
+				}
+			})
+		});
+
+		//密码检测
+		$("#pwd1,#pwd2").blur(function(){
+			pwd2 = $("#pwd2").val();
+			pwd1 = $("#pwd1").val();
+
+			if(pwd1 != pwd2){
+				pwdCk = false;
+			} else {
+				pwdCk = true;
+			}
+		})
+
+		//图片检测
+
+		//
+		$("#sub").click(function(){
+			if(actCk && pwdCk && iconCK) {
+				$(this).submit();
+			}
+		})
+	</script>
+</body>
+</html>
