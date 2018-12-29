@@ -1,0 +1,58 @@
+{include file="Pub/layer" /}
+<div class="layui-row">
+
+	<ul class="layui-nav">
+		<li class="layui-col-md2">&nbsp;</li>
+		<li class="layui-nav-item layui-col-md1">
+			<a href="">校园主页</a>
+		</li>
+
+		<li class="layui-nav-item layui-col-md1">
+			<a href="">宿舍争霸</a>
+		</li>
+
+		<li class="layui-nav-item layui-col-md1">
+			<a href="">图书馆</a>
+		</li>
+
+		<li class="layui-nav-item layui-col-space30">
+			<a href="javascript:;">二手交易</a>
+			<dl class="layui-nav-child">
+				<dd><a href="javascript:;">我是买家<span class="layui-badge-dot"></span></a></dd>
+				<dd><a href="">我是老板<span class="layui-badge-dot"></span></a></dd>
+			</dl>
+		</li>
+		
+		<li class="layui-nav-item layui-col-md1">
+			<a href="">清风自来</a>
+		</li>
+
+		<li class="layui-nav-item layui-col-md1">
+			<a href="">清风自来</a>
+		</li>
+
+		<!-- <li class="layui-nav-item layui-col-md1">
+			<a href="javascript:;">快递帮拿</a>
+			<dl class="layui-nav-child">
+				<dd><a href="javascript:;">发布任务</a></dd>
+				<dd><a href="">接受任务</a></dd>
+			</dl>
+		</li> -->
+
+		<li class="layui-nav-item layui-col-md1">
+			<a href="javascript:;">校园论坛</a>
+		</li>
+
+		<li class="layui-nav-item layui-col-md-offset1">
+			<!-- 头像 -->
+			<a href="javascript:;">
+				<img src="{$Think.session.User.icon}" class="layui-nav-img">{$Think.session.User.nick|checkLen}
+			</a>
+			<dl class="layui-nav-child">
+				<dd><a href="javascript:;">修改信息</a></dd>
+				<dd><a href="javascript:;">安全管理</a></dd>
+				<dd><a href="/index.php/Index/Login/logout">退了</a></dd>
+			</dl>
+		</li>
+	</ul>
+</div>
