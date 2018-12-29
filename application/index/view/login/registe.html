@@ -3,11 +3,12 @@
 <head>
 	<meta charset="UTF-8">
 	<title>注册账号</title>
-	<script src="/static/js/jquery-1.8.2.min.js"></script>
+	{include file="Pub/layer" /}
 </head>
 <body>
-	<form action="checkReg" method="post" enctype="multipart/form-data">
-		学号：<input type="text" maxlength="10" name="act" id="act" autocomplete="off" onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();" required> <i id="warn">o</i><br>
+	<form action="checkReg" method="post" enctype="multipart/form-data" id="form">
+		学号：<input type="text" maxlength="10" name="act" id="act" autocomplete="off" onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" required>
+		<i id="warn"></i><br>
 		姓名：<input type="text" name="name" autocomplete="off" required><br>
 		密码：<input type="password" name="pwd1" autocomplete="off" required id="pwd1"> <br>
 		again：<input type="password" name="pwd2" autocomplete="off" required id='pwd2'><br>
@@ -16,7 +17,7 @@
 		女 <input type="radio" name="sex" value="2"><br>
 		头像：<input type="file" name="icon" required id="icon"><br>
 		所属学院：
-		<select name="institute" id="ins">
+		<select name="iid" id="ins">
 			<option value="0">请选择</option>
 			{volist name="insData" id="insVo"}
 				<option value="{$insVo.id}">{$insVo.title}</option>
@@ -24,7 +25,7 @@
 		</select>
 		<br>
 		所在班级：
-		<select name="class" id="cls">
+		<select name="cid" id="cls">
 			<option value="0">请选择</option>
 		</select>
 		<br>
@@ -34,7 +35,7 @@
 	<script>
 		var actCk = false;
 		var pwdCk = false;
-		var iconCK = false;
+		var iconCk = false;
 		//二级联动
 		$("#ins").change(function(){
 			//删除标签
@@ -73,7 +74,6 @@
 		$("#pwd1,#pwd2").blur(function(){
 			pwd2 = $("#pwd2").val();
 			pwd1 = $("#pwd1").val();
-
 			if(pwd1 != pwd2){
 				pwdCk = false;
 			} else {
@@ -82,13 +82,86 @@
 		})
 
 		//图片检测
-
-		//
-		$("#sub").click(function(){
-			if(actCk && pwdCk && iconCK) {
-				$(this).submit();
+		$("#icon").change(function(){
+			allow = [".jpg",".jpeg",".png",".gif"];
+			icon = $(this).val();
+			iconCk = false;
+			suc = false;
+			type = (icon.substr(icon.lastIndexOf("."))).toLowerCase();
+			$.each(allow,function(i,item){
+				if (type == item) {
+					iconCk = true;
+					suc = true;
+				}
+			});
+			if(!suc) {
+				layer.open({
+					tpye:1,
+					content:"图片格式不正确",
+					icon:5,
+					shade:[0],
+					shadeClose:true,
+					time:1000
+				})
+				$(this).val('');
 			}
 		})
+
+		//整体检测，错误排查
+		$("#sub").click(function(e){
+			if($("#act").val() == ''){
+				layer.open({
+					tpye:1,
+					content:"请输入学号",
+					icon:5,
+					shade:[0],
+					shadeClose:true,
+					time:1000
+				});
+				$("#act").focus();
+			}else if(!actCk) {
+				layer.open({
+					tpye:1,
+					content:"请输入正确的学号",
+					icon:5,
+					shade:[0],
+					shadeClose:true,
+					time:1000
+				});
+				$("#act").focus();
+			}else if(pwd1 == '' || pwd2 == '') {
+				layer.open({
+					tpye:1,
+					content:"请输入密码",
+					icon:5,
+					shade:[0],
+					shadeClose:true,
+					time:1000
+				})
+				$("#pwd").focus();
+			}else if(!pwdCk) {
+				layer.open({
+					tpye:1,
+					content:"请确认两次密码是否一致",
+					icon:5,
+					shade:[0],
+					shadeClose:true,
+					time:1000
+				});
+				$("#pwd").focus();
+			}else if(!iconCk) {
+				layer.open({
+					tpye:1,
+					content:"请选择头像",
+					icon:5,
+					shade:[0],
+					shadeClose:true,
+					time:1000
+				})
+			}else if(actCk&&pwdCk&&iconCk) {
+				$("#form").submit();
+			}
+		});
 	</script>
 </body>
 </html>
