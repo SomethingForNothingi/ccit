@@ -10,3 +10,13 @@
 // +----------------------------------------------------------------------
 
 // 应用公共文件
+
+
+//检测数据长度
+function checkLen($str,$len=5){
+	if (mb_strlen($str) > $len) {
+		$str = mb_substr($str, 0,$len);
+		$str .= "..";
+	}
+	return $str;
+}
