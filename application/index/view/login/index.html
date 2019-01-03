@@ -29,12 +29,45 @@
         act = $("#act").val();
         pwd = $("#pwd").val();
         verify = $("#verify").val();
+        if(act == "") {
+            layer.open({
+                tpye:1,
+                content:"请输入账号",
+                icon:5,
+                shade:[0],
+                shadeClose:true,
+            });
+            return false;
+        }
+
+        if(pwd == "") {
+            layer.open({
+                tpye:1,
+                content:"请输入密码",
+                icon:5,
+                shade:[0],
+                shadeClose:true,
+            });
+            return false;
+        }
+
+        if(verify == "") {
+            layer.open({
+                tpye:1,
+                content:"请输入验证码",
+                icon:5,
+                shade:[0],
+                shadeClose:true,
+            });
+            return false;
+        }
+
         $.post("check",{act:act,pwd:pwd,verify:verify},function(e){
             e = $.parseJSON(e);
             if(e.code == 1){
                 window.location.href="/index.php/Index/index";
             } else {
-                console.log(e.msg);
+                //console.log(e.msg);
                 layer.open({
                     tpye:1,
                     content:e.msg,

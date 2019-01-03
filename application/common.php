@@ -20,3 +20,8 @@ function checkLen($str,$len=5){
 	}
 	return $str;
 }
+
+//返回用户session
+function userSession($param) {
+	return $_SESSION["User"][$param];
+}

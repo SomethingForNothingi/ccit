@@ -1,5 +1,5 @@
 {include file="Pub/layer" /}
-<div class="layui-row">
+<div class="layui-row" id="header">
 
 	<ul class="layui-nav">
 		<li class="layui-col-md2">&nbsp;</li>
@@ -45,14 +45,57 @@
 
 		<li class="layui-nav-item layui-col-md-offset1">
 			<!-- 头像 -->
-			<a href="javascript:;">
+			<a href="javascript:;" title="{$Think.session.User.nick}">
 				<img src="{$Think.session.User.icon}" class="layui-nav-img">{$Think.session.User.nick|checkLen}
 			</a>
 			<dl class="layui-nav-child">
-				<dd><a href="javascript:;">修改信息</a></dd>
-				<dd><a href="javascript:;">安全管理</a></dd>
+				<dd id="header_modify"><a href="javascript:;">修改信息</a></dd>
+				<dd id="header_secure"><a href="javascript:;">安全管理</a></dd>
 				<dd><a href="/index.php/Index/Login/logout">退了</a></dd>
 			</dl>
 		</li>
 	</ul>
 </div>
+
+<script>
+
+	//个人信息
+	$("#header_modify").click(function(){
+		$.post("/index.php/Index/Pub/modify",function(res){
+			layer.open({
+	            tpye:1,
+	            title:"个人信息",
+	            content:res,	//内容地址
+	            shadeClose:false,
+	            anim:1,			//打开时从上边掉下来
+	            maxmin:false,	//允许最大最小化
+	            area:["800px","600px"],
+	            closeBtn:2,
+	            scrollbar:1,
+	            btn:"",
+	            end:function(){
+	            	//刷新,应该使用局部刷新
+	            	window.location.reload();
+	            }
+	        });
+		})
+	});
+
+	//安全管理
+	$("#header_secure").click(function(){
+		$.post("/index.php/Index/Pub/secure",function(res){
+			layer.open({
+	            tpye:1,
+	            title:"账号信息",
+	            content:res,	//内容地址
+	            shadeClose:false,
+	            anim:1,			//打开时从上边掉下来
+	            maxmin:false,	//允许最大最小化
+	            area:["400px","600px"],
+	            closeBtn:2,
+	            scrollbar:1,
+	            btn:""
+	        });
+		})
+	});
+</script>

@@ -27,6 +27,12 @@
 
 		//获取账号信息
 		public function getUserMes($act){
-			return Db::table("User")->where('act='.$act)->find();
+			$data = Db::table("User")->where('act='.$act)->find();
+			//添加学校班级信息
+			$where['iid'] = $data['iid'];
+			$where['id'] = $data['cid'];
+			$data['ctitle'] = Db::table("class")->where($where)->value('title');
+			$data['ititle'] = Db::table("institute")->where('id='.$data['iid'])->value('title');
+			return $data;
 		}
 	}
