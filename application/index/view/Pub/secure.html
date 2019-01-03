@@ -1,0 +1,88 @@
+<!-- 进度条 -->
+<!-- <div class="layui-progress layui-progress-big">
+	<div class="layui-progress-bar" lay-showpercent="true" lay-percent="20%"></div>
+</div> -->
+
+<!-- 个人信息 -->
+
+<form class="layui-form" lay-filter="user" method="post" enctype="multipart/form-data" style="text-align: center;" id="cMes">
+	
+	<!-- 头像 -->
+	<div class="layui-form-item">
+		<div class="layui-input-block" style="text-align: center;">
+			<img src="{$Think.session.User.icon}" class="layui-nav-img" style="height: 80px;width: 80px;" id="icon">
+		</div>
+  	</div>
+
+	<div class="layui-form-item">
+		<label class="layui-form-label">账号</label>
+		<div class="layui-input-block">
+			<input type="text" name="act" readonly  lay-verify="readonly" value="{$Think.session.User.act}" autocomplete="off" class="layui-input">
+		</div>
+  	</div>
+
+  	<div class="layui-form-item">
+		<label class="layui-form-label">真实姓名</label>
+		<div class="layui-input-block">
+			<input type="text" name="name" placeholder="名字" value="{$Think.session.User.name}" autocomplete="off" class="layui-input">
+		</div>
+  	</div>
+
+	<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+		<legend>修改密码</legend>
+	</fieldset>
+
+	<div class="layui-form-item">
+		<label class="layui-form-label">原密码</label>
+		<div class="layui-input-block">
+			<input type="password" name="oldPwd" id="oldPwd" placeholder="原密码" autocomplete="off" class="layui-input">
+		</div>
+  	</div>
+
+  	<div class="layui-form-item">
+		<label class="layui-form-label">新密码</label>
+		<div class="layui-input-block">
+			<input type="password" name="pwd" id="pwd" placeholder="新密码" maxlength="16" autocomplete="off" class="layui-input">
+		</div>
+  	</div>
+	
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <button class="layui-btn"  id="changeMes">立即提交</button>
+      <button type="reset" class="layui-btn layui-btn-primary" id="reset">重置</button>
+    </div>
+  </div>
+</form>
+ <input type="hidden" id="secureCheck" value="0">
+<script>
+//表单赋值
+layui.use('form', function(){
+	var form = layui.form;
+});
+$("#changeMes").click(function(){
+	var oldPwd = $("#oldPwd").val();
+	var pwd = $("#pwd").val();
+	$.post("Pub/checkPwd",{oldPwd:oldPwd},function(e){
+		//console.log(e);
+		if(e == 1) {
+			$("#secureCheck").val("1");
+		} else{
+			$("#secureCheck").val("0");
+		}
+	});
+	if($("#secureCheck").val() == "1") {
+		if(pwd == "" || pwd == undefined){
+			alert("请输入密码");
+			return false;
+		} else {
+			$.post("Pub/changePwd",{pwd:$("#pwd").val()},function(e){
+				window.location.href="/index.php/Index/Login/index";
+			})
+		}
+	} else {
+		alert("原密码错误");
+		return false;
+	}
+})
+</script>
+      

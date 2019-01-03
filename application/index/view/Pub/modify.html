@@ -1,0 +1,180 @@
+<!-- 进度条 -->
+<!-- <div class="layui-progress layui-progress-big">
+	<div class="layui-progress-bar" lay-showpercent="true" lay-percent="20%"></div>
+</div> -->
+
+<!-- 个人信息 -->
+
+<form class="layui-form" lay-filter="user" method="post" enctype="multipart/form-data" style="text-align: center;" id="cMes">
+	
+	<!-- 头像 -->
+	<div class="layui-form-item">
+		<div class="layui-input-block" style="text-align: center;">
+			<img src="{$Think.session.User.icon}" class="layui-nav-img" style="height: 80px;width: 80px;" id="icon">
+			<input type="file" name="icon"  value="{$Think.session.User.icon}" style="display: none;" id="userIcon">
+		</div>
+  	</div>
+
+	<div class="layui-form-item">
+		<label class="layui-form-label">账号</label>
+		<div class="layui-input-block">
+			<input type="text" name="act" readonly  lay-verify="readonly" value="{$Think.session.User.act}" autocomplete="off" class="layui-input">
+		</div>
+  	</div>
+
+  	<div class="layui-form-item">
+		<label class="layui-form-label">昵称</label>
+		<div class="layui-input-block">
+			<input type="text" name="nick" placeholder="昵称" value="{$Think.session.User.nick}" autocomplete="off" class="layui-input">
+		</div>
+  	</div>
+
+  	<!-- 性别 -->
+	<div class="layui-form-item">
+		<div class="layui-form-item">
+			<label class="layui-form-label">年龄</label>
+			<div class="layui-input-inline">
+				<input type="text" name="age" placeholder="未知" value="{$Think.session.User.age}" autocomplete="off" class="layui-input">
+			</div>
+
+			<label class="layui-form-label">性别</label>
+			<div class="layui-input-inline">
+				{if $Think.session.User.sex==2}
+					<input type="radio" name="sex" value=1 title="男">
+					<input type="radio" name="sex" value=2 title="女" checked="">
+				{else /}
+					<input type="radio" name="sex" value=1 title="男" checked="">
+					<input type="radio" name="sex" value=2 title="女">
+				{/if}
+			</div>
+		</div>
+		
+	</div>
+
+	<!-- 学院选择 -->
+  	<div class="layui-form-item">
+		<label class="layui-form-label">学院</label>
+		<div class="layui-input-inline">
+			<select name="iid" id="ins" lay-filter="ins">
+				{if $Think.session.User.iid==0}
+					<option value="0">请选择</option>
+				{else /}
+					{volist name="insData" id="insVo"}
+						<option value="{$insVo.id}" {if $Think.session.User.iid==$insVo.id}selected{/if}>{$insVo.title}</option>
+					{/volist}
+				{/if}			
+			</select>
+		</div>
+
+		<label class="layui-form-label">班级</label>
+		<div class="layui-input-inline">
+			<select name="cid" id="cls" lay-filter="cls">
+				{if $Think.session.User.cid==0}
+					<option value="0">请选择</option>
+				{else /}
+					<option value="{$Think.session.User.cid}">{$Think.session.User.ctitle}</option>
+				{/if}
+			</select>
+		</div>
+	</div>
+
+  	<!-- 个性签名 -->
+  	<div class="layui-form-item">
+		<label class="layui-form-label">签名</label>
+		<div class="layui-input-block">
+	      <textarea placeholder="请输入内容" name="sign" class="layui-textarea">{$Think.session.User.sign}</textarea>
+	    </div>
+	</div>
+	
+  <div class="layui-form-item">
+    <div class="layui-input-block">
+      <button class="layui-btn"  id="changeMes">立即提交</button>
+      <button type="reset" class="layui-btn layui-btn-primary" id="reset">重置</button>
+    </div>
+  </div>
+</form>
+ 
+<script>
+$("#reset").click();
+
+function init(){
+
+	layui.use("form",function(){
+		var form = layui.form;
+
+		iid = {$Think.session.User.iid};
+		$.post("Pub/getClass",{iid:iid},function(e){
+			$.each(e,function(i,val){
+				clsFlag = ({$Think.session.User.cid} == i);
+				//添加班级数据 二级联动
+				if(clsFlag) {
+					$("#cls").append("<option value="+i+" selected>"+val+"</option>");
+				} else {
+					$("#cls").append("<option value="+i+">"+val+"</option>");
+				}
+				
+				form.render('select');
+			});
+		});
+	});
+	
+}
+//页面初始化
+init();
+//表单赋值
+layui.use(['form','upload'], function(){
+	var form = layui.form;
+	var upload = layui.upload;
+	form.on('select(ins)', function(data){
+		//删除标签
+		$("#cls").empty();
+		var iid = data.value;
+		//ajax获取 二级联动
+		$.post("Pub/getClass",{iid:iid},function(e){
+			$.each(e,function(i,val){
+				//新增数据,获取班级
+				$("#cls").append("<option value="+i+">"+val+"</option>");
+				form.render('select');
+			});
+		});
+		
+	});
+	
+});
+
+// 修改头像
+$("#icon").click(function(){
+	$("#userIcon").click();
+	$("#userIcon").change(function(){
+		allow = [".jpg",".jpeg",".png",".gif"];
+		icon = $(this).val();
+		suc = false;
+		type = (icon.substr(icon.lastIndexOf("."))).toLowerCase();
+		$.each(allow,function(i,item){
+			if (type == item) {
+				suc = true;
+			}
+		});
+		if(!suc) {
+			layer.msg("图片格式不正确");
+			$(this).val('');
+		} else {
+			$("#icon").attr("src",window.URL.createObjectURL($(this)[0].files[0]));
+		}
+	});
+});
+
+//修改信息ajax提交
+$("#changeMes").click(function(){
+	$.post("Pub/changeMes",$("#cMes").serialize(),function(e){
+		//解析为json格式
+		e = eval("("+e+")");
+		//成功
+		layer.msg(e.msg);
+	});
+	
+	return false;
+})
+
+</script>
+      
