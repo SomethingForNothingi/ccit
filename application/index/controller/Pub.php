@@ -40,6 +40,12 @@ class Pub extends Base
 		exit(json_encode(array("code"=>1,"msg"=>"修改成功")));
 	}
 
+	public function changeIcon(){
+		dump($_FILES);
+		echo "isSuccess";
+	}
+
+	//安全管理界面
 	public function secure(){
 		return $this->fetch();
 	}

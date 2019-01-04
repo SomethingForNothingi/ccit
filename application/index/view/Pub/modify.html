@@ -166,7 +166,7 @@ $("#icon").click(function(){
 
 //修改信息ajax提交
 $("#changeMes").click(function(){
-	$.post("Pub/changeMes",$("#cMes").serialize(),function(e){
+	$.post("{:url('Pub/changeMes')}",$("#cMes").serialize(),function(e){
 		//解析为json格式
 		e = eval("("+e+")");
 		//成功
