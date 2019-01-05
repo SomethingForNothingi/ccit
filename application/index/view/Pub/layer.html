@@ -1,0 +1,18 @@
+{load href="/static/js/jquery-1.8.2.min.js" /}
+{load href="/static/layui/layui.js" /}
+{load href="/static/layui/css/layui.css" /}
+<script>
+	layui.use("layer",function(){
+		var layer = layui.layer;
+
+	});
+	layui.use('element', function(){
+		var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+
+		//监听导航点击
+		element.on('nav(demo)', function(elem){
+			//console.log(elem)
+			layer.msg(elem.text());
+		});
+	});
+</script>
