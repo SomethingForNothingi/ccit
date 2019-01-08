@@ -103,7 +103,7 @@ function init(){
 		var form = layui.form;
 
 		iid = {$Think.session.User.iid};
-		$.post("Pub/getClass",{iid:iid},function(e){
+		$.post("{:url('Pub/getClass')}",{iid:iid},function(e){
 			$.each(e,function(i,val){
 				clsFlag = ({$Think.session.User.cid} == i);
 				//添加班级数据 二级联动
@@ -130,7 +130,7 @@ layui.use(['form','upload'], function(){
 		$("#cls").empty();
 		var iid = data.value;
 		//ajax获取 二级联动
-		$.post("Pub/getClass",{iid:iid},function(e){
+		$.post("{:url('Pub/getClass')}",{iid:iid},function(e){
 			$.each(e,function(i,val){
 				//新增数据,获取班级
 				$("#cls").append("<option value="+i+">"+val+"</option>");

@@ -25,3 +25,16 @@ function checkLen($str,$len=5){
 function userSession($param) {
 	return $_SESSION["User"][$param];
 }
+
+//校园网验证
+function xyw($time){
+	if(empty($time)) {
+		return "未办理校园网服务";
+	}
+	if(strtotime($time) >= time()){
+		return "校园网剩余".ceil((strtotime($time)-time())/60/60/24).'天';
+	}
+	if(strtotime($time) < time()) {
+		return "校园网已到期";
+	}
+}

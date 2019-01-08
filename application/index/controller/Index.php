@@ -33,6 +33,12 @@ class Index extends Base
     //新闻详情
     public function newsDetail()
     {
-    	
+        //点击阅读，增加阅读量
+        $save['read'] = Db::table('news')->where('id='.input('get.id'))->value('read')+1;
+        Db::table('news')->where('id='.input('get.id'))->update($save);
+        //前端数据返回
+        $data = Db::table('news')->where('id='.input('get.id'))->find();
+        $this->assign('data',$data);
+    	return $this->fetch();
     }
 }
