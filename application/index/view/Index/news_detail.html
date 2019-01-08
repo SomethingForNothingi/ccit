@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>新闻详情</title>
+	{include file="Pub/header" /}
+	{load href="/static/css/index.css" /}
+</head>
+<body>
+	<!-- main部分 -->
+	<div class="main-newsdate">
+		<div class="layui-container">
+			<p class="news"><a href="news.html">实时新闻</a> > 新闻详情</p>
+			<h1>{$data.title}</h1>
+			<p class="pushtime">发布时间：<span>{$data.time}</span></p>	
+			<p class="introBott">{$data.content}</p>
+		</div> 
+	</div>
+</body>
+</html>
