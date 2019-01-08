@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>充值中心</title>
+    {include file="Pub/header" /}
+</head>
+<body>
+    <div style="margin-left: 300px;width: 58%;">
+        <div class="layui-tab">
+            <ul class="layui-tab-title">
+                <li class="layui-this" lay-id='balance'>账户信息</li>
+                <li></li>
+                <li>校园卡充值</li>
+                <li></li>
+                <li>校园网缴费</li>
+                <li></li>
+                <li>C币充值</li>
+                <li></li>
+                <li>C币提现</li>
+            </ul>
+            <div class="layui-tab-content" style="margin-top: 30px;">
+                <div class="layui-tab-item layui-show">
+                    <!-- 账户信息 -->
+                    <form class="layui-form">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">学生卡号</label>
+                            <div class="layui-input-block">
+                                <input type="text" lay-verify="title" readonly autocomplete="off" placeholder="{:session('User.act')}" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">校园卡余额</label>
+                            <div class="layui-input-block">
+                                <input type="text" readonly placeholder="{$wallet.xyk}" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">校园网到期</label>
+                            <div class="layui-input-block">
+                                <input type="text" readonly placeholder="{$wallet.xyw|xyw}" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">C币余额</label>
+                            <div class="layui-input-block">
+                                <input type="text" readonly placeholder="{$wallet.cb}" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="layui-tab-item"></div>
+                <!-- 校园卡充值 -->
+                <div class="layui-tab-item">
+                    <form class="layui-form" id="form1">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">学生卡号</label>
+                            <div class="layui-input-block">
+                                <input type="text" lay-verify="title" readonly autocomplete="off" placeholder="{:session('User.act')}" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">校园卡余额</label>
+                            <div class="layui-input-block">
+                                <input type="text" readonly placeholder="{$wallet.xyk}" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">充值金额</label>
+                            <div class="layui-input-block">
+                                <input type="text" name="cz" lay-verify="required|number" placeholder="请输入充值金额" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">支付方式</label>
+                                <div class="layui-input-block">
+                                    <input type="radio" lay-filter="r1" name="zf" value="cb1" title="C币充值" checked="">
+                                    <input type="radio" lay-filter="r1" name="zf" value="zfb1" title="支付宝">
+                                    <input type="radio" lay-filter="r1" name="zf" value="wx1" title="微信">
+                                    
+                                    <input type="radio" lay-filter="r1" name="zf" title="银行卡" disabled="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item" id="pwd1">
+                            <label class="layui-form-label">账户密码</label>
+                            <div class="layui-input-block">
+                                <input type="password" name="pwd1" id="pwd1_1" lay-verify="required" placeholder="请输入账户密码" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label"></label>
+                            <div>
+                                <button class="layui-btn" type="button" id="cb1" onclick="xykPay()">C币支付</button>
+                                <img id="zfb1" src="/static/img/zfb.jpg" width="200px" style="display: none;" />
+                                <img id="wx1" src="/static/img/wx.png" width="200px" style="display: none;" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="layui-tab-item"></div>
+                <!-- 校园网缴费 -->
+                <div class="layui-tab-item">
+                    <form class="layui-form" id="form2">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">学生卡号</label>
+                            <div class="layui-input-block">
+                                <input type="text" lay-verify="title" readonly autocomplete="off" placeholder="{:session('User.act')}" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">校园网到期</label>
+                            <div class="layui-input-block">
+                                <input type="text" readonly placeholder="{$wallet.xyw|xyw}" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">时长<i style="font-size: 12px;">(20￥/月)</i></label>
+                            <div class="layui-input-block">
+                                <input type="radio" name="czTime" value="1" title="一个月" checked="">
+                                <input type="radio" name="czTime" value="2" title="两个月">
+                                <input type="radio" name="czTime" value="3" title="三个月">
+                                <input type="radio" name="czTime" value="4" title="四个月">
+                                <input type="radio" name="czTime" value="5" title="五个月">
+                                <input type="radio" name="czTime" value="6" title="六个月">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">支付方式</label>
+                                <div class="layui-input-block">
+                                    <input type="radio" lay-filter="r2" name='xyw' value="cb2" title="C币充值" checked="">
+                                    <input type="radio" lay-filter="r2" name='xyw' value="xyk2" title="校园卡充值">
+                                    <input type="radio" lay-filter="r2" name='xyw' value="zfb2" title="支付宝">
+                                    <input type="radio" lay-filter="r2" name='xyw' value="wx2" title="微信">
+                                    <input type="radio" lay-filter="r2" name='xyw' title="银行卡" disabled="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layui-form-item" id="pwd2">
+                            <label class="layui-form-label">账户密码</label>
+                            <div class="layui-input-block">
+                                <input type="password" name="pwd2" id="pwd1_2" lay-verify="required" placeholder="请输入账户密码" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label"></label>
+                            <div>
+                                <button class="layui-btn" type="button" id="cb2" onclick="xywPay()">C币支付</button>
+                                <button class="layui-btn" type="button" style="display: none;" id="xyk2" onclick="xywPay()">校园卡支付</button>
+                                <img id="zfb2" src="/static/img/zfb.jpg" width="200px" style="display: none;" />
+                                <img id="wx2" src="/static/img/wx.png" width="200px" style="display: none;" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="layui-tab-item"></div>
+                <!-- C币充值    -->
+                <div class="layui-tab-item">
+                    <img src="/static/img/zfb.jpg" width="200px" style="margin-left: 200px;"/>
+                    <img src="/static/img/wx.png" width="200px" style="margin-left: 100px;" />
+                </div>
+                <div class="layui-tab-item"></div>
+                <!-- C币提现    -->
+                <div class="layui-tab-item">正在熬夜写代码,请见谅...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        layui.use(['form','element'],function(){
+            var form = layui.form;
+            var element = layui.element;
+            //校园卡充值特效
+            form.on('radio(r1)', function(data){
+                $("#pwd1_1").val('');
+                $("#pwd1").hide();
+                $("#wx1").hide();
+                $("#zfb1").hide();
+                $("#cb1").hide();
+                //切换至支付宝支付
+                if(data.value == 'zfb1') {
+                    $("#zfb1").show();
+                }
+                //切换至微信支付
+                if(data.value == 'wx1') {
+                    $("#wx1").show();
+                }
+                //切换至C币支付
+                if(data.value == 'cb1') {
+                    $("#cb1").show();
+                    $("#pwd1").show();
+                } 
+            });
+
+            //校园网缴费特效
+            form.on('radio(r2)', function(data){
+                $("#pwd1_2").val('');
+                $("#pwd2").hide();
+                $("#wx2").hide();
+                $("#zfb2").hide();
+                $("#cb2").hide();
+                $("#xyk2").hide();
+                //切换至支付宝支付
+                if(data.value == 'zfb2') {
+                    $("#zfb2").show();
+                }
+                //切换至微信支付
+                if(data.value == 'wx2') {
+                    $("#wx2").show();
+                }
+                //切换至C币支付
+                if(data.value == 'cb2') {
+                    $("#cb2").show();
+                    $("#pwd2").show();
+                }
+                if(data.value == 'xyk2') {
+                    $("#pwd2").show();
+                    $("#xyk2").show();
+                }
+            });
+
+        });
+
+        //校园卡充值
+        function xykPay(){
+            //ajax，避免造成不必要的页面刷新问题
+            $.post("{:url('Charge/xyk')}",$("#form1").serialize(),function(e){
+                //解析为json格式
+                e = eval("("+e+")");
+                //判定返回值
+                if(e.code < '0') {
+                    layer.msg(e.msg);
+                }
+                if(e.code == '1'){
+                    //两种方式退出，点击确认/关闭，刷新父页面
+                    layer.open({
+                        title: '充值成功'
+                        ,content: '恭喜你，充值成功'
+                        ,btn : ['ok']
+                        ,yes:function(index,layero){
+                            parent.location.reload();
+                        }
+                        ,closeBtn:2
+                        ,cancel:function(index,layero){
+                            parent.location.reload();
+                        }
+
+                    });     
+                }
+            });
+        }
+
+        function xywPay(){
+            //ajax，避免造成不必要的页面刷新问题
+            $.post("{:url('Charge/xyw')}",$("#form2").serialize(),function(e){
+                //解析为json格式
+                e = eval("("+e+")");
+                console.log(e);
+                //判定返回值
+                if(e.code < '0') {
+                    layer.msg(e.msg);
+                }
+                if(e.code == '1'){
+                    //两种方式退出，点击确认/关闭，刷新父页面
+                    layer.open({
+                        title: '缴费成功'
+                        ,content: '校园网缴费成功'
+                        ,btn : ['ok']
+                        ,yes:function(index,layero){
+                            parent.location.reload();
+                        }
+                        ,closeBtn:2
+                        ,cancel:function(index,layero){
+                            parent.location.reload();
+                        }
+
+                    });     
+                }
+            });
+        }
+    </script>
+</body>
+</html>
