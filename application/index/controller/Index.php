@@ -7,7 +7,7 @@ class Index extends Base
     public function index()
     {
     	//未加载前最大的新闻数量
-    	$limit = 7;
+    	$limit = 10;
     	//获取今日新闻
     	$data = Db::table('news')->order("time desc")->limit($limit)->select();
     	//传递到前端
@@ -24,8 +24,8 @@ class Index extends Base
     public function loadNews()
     {
     	$curPage = input("post.curPage");
-    	$low = $curPage * 7;
-    	$data = Db::table('news')->order("time desc")->limit($low,7)->select();
+    	$low = $curPage * 10;
+    	$data = Db::table('news')->order("time desc")->limit($low,10)->select();
     	//返回最新数据
     	exit(json_encode($data));
     }
