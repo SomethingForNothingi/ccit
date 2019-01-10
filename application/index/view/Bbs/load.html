@@ -34,36 +34,4 @@
 		}
 		//启动
 		init();
-		$(".like").click(function(){
-			id = $(this).attr("aid");
-			t = $(this);
-			//是否处于被赞状态
-			if($(this).attr("z") == "on"){
-				//取消点赞
-					t.attr("z","off");
-					//置灰
-					t.css("color","black");
-					//修改内容
-					t.children("span").text("点赞");
-				//ajax,设置新值
-				$.post("{:url('Bbs/praise')}",{id:id,z:"on"},function(e){
-					e = eval("("+e+")");
-					//点赞数量-1
-					t.children("i").text(e.pNum);
-				});
-			} else {
-				//ajax,设置新值
-				$.post("{:url('Bbs/praise')}",{id:id,z:"off"},function(e){
-					//重新点赞
-					t.attr("z","on");
-					//橙色显示
-					t.css("color","#FF8C00");
-					//内容
-					t.children("span").text("已赞");
-					e = eval("("+e+")");
-					//点赞数量+1
-					t.children("i").text(e.pNum);
-				});
-			}
-		})
 </script>
