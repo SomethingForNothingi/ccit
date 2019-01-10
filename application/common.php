@@ -39,6 +39,11 @@ function xyw($time){
 	}
 }
 
+//通过用户id获取用户名字
+function getUserById($id,$val = 'nick') {
+	return Db::table('User')->where('id='.$id)->value($val);
+}
+
 
 //使用扩展库的redis
 function getRedis() {
