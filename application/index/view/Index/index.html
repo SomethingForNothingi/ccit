@@ -25,7 +25,7 @@
               <div class="news-img"><a href='{:url("Index/newsDetail")}?id={$vo.id}'><img width="90%" src="{$vo.img|default='/static/img/default.jpg'}"></a></div><div class="news-panel">
                 <strong><a href="{:url("Index/newsDetail")}?id={$vo.id}">{$vo.title}</a></strong>
                 <p class="detail"><span>{$vo.content|checkLen=55}</span><a href='{:url("Index/newsDetail")}?id={$vo.id}'>[详细]</a></p>
-                <p class="read-push">阅读 <span>{$vo.read}</span>&nbsp;&nbsp;&nbsp;&nbsp;发布时间：<span>{$vo.time}</span></p>
+                <p class="read-push"><span>{$vo.author}&nbsp;&nbsp;&nbsp;&nbsp;</span>阅读 <span>{$vo.read}</span>&nbsp;&nbsp;&nbsp;&nbsp;发布于：<span>{$vo.time}</span></p>
               </div>
             </div>
           </div>
@@ -62,7 +62,7 @@ layui.use('flow', function(){
                 //开始操作
                 setTimeout(function(){
                     var lis = [];
-                    lis.push('<div class="layui-col-lg6 content"><div><div class="news-img"><a href="{:url("Index/newsDetail")}?id={$vo.id}"><img width="90%" src="'+obj.img+'"></a></div><div class="news-panel"><strong><a href="#">'+obj.title+'</a></strong><p class="detail"><span>'+obj.content+'</span><a href="#">[详细]</a></p><p class="read-push">阅读 <span>'+obj.read+'</span>&nbsp;&nbsp;&nbsp;&nbsp;<span>'+obj.praise+'</span>&nbsp;&nbsp;&nbsp;&nbsp;发布时间：<span>'+obj.time+'</span></p></div></div></div>'); 
+                    lis.push('<div class="layui-col-lg6 content"><div><div class="news-img"><a href="{:url("Index/newsDetail")}?id={$vo.id}"><img width="90%" src="'+obj.img+'"></a></div><div class="news-panel"><strong><a href="{:url("Index/newsDetail")}?id={$vo.id}">'+obj.title+'</a></strong><p class="detail"><span>'+obj.content+'</span><a href="{:url("Index/newsDetail")}?id={$vo.id}">[详细]</a></p><p class="read-push"><span>'+obj.author+'&nbsp;&nbsp;&nbsp;&nbsp;</span>阅读 <span>'+obj.read+'</span>&nbsp;&nbsp;&nbsp;&nbsp;发布时间：<span>'+obj.time+'</span></p></div></div></div>'); 
                     //可加载次数
                     next(lis.join(''), page < {$newsPage+1});
                 }, 500);
