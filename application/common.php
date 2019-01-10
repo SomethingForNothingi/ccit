@@ -38,3 +38,21 @@ function xyw($time){
 		return "校园网已到期";
 	}
 }
+
+
+//使用扩展库的redis
+function getRedis() {
+	$redis = new Unit\Redis\Redis();
+	return $redis;
+}
+//key为文章id，$val为用户id
+function checkZ($key,$val) {
+	$redis = getRedis();
+	$key = "article".$key;
+	$has = $redis->has($key,$val);
+	if($has >= 1) {
+		return "on";
+	} else {
+		return "off";
+	}
+}
