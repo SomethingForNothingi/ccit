@@ -1,5 +1,4 @@
 *.xml
 *.log
 *.apk
-/runtime
 /public/uploads

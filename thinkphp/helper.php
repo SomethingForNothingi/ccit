@@ -718,3 +718,15 @@ if (!function_exists('yaconf')) {
         return Config::yaconf($name, $default);
     }
 }
+
+//新增助手函数Redis
+if (!function_exists('redis')) {
+    /**
+     * 获取容器对象实例
+     * @return Container
+     */
+    function redis()
+    {
+        return \model\Redis::redis();
+    }
+}
