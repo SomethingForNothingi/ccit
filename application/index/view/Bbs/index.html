@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	{include file="Pub/header" /}
+	<link rel="stylesheet" href="/static/css/bbs.css">
+</head>
+<body class="lay-blog" style="background-color: #EEE;">
+	<div class="container-wrap" style="padding:30px 0 160px 0;">
+		<div class="container">
+			<div class="contar-wrap">
+				<h4 class="item-title">
+					<p><i class="layui-icon layui-icon-speaker"></i><span>分享生活中的点点滴滴，把你的故事讲给大家听</span></p>
+				</h4>
+				{volist name='article' id='vo'}
+					<div class="item">
+						<div class="item-box  layer-photos-demo1 layer-photos-demo">
+							<h3><a href="details.html">{$vo.title}</a></h3>
+							<h5>发布于：<span>{$vo.commitTime}</span></h5>
+							<p>{$vo.comment|checkLen=300} <a href="javascript:;">[详情]</a></p>
+							{if $vo.pic1 != ''}
+							<img src="{$vo.pic1}" width="200"> 
+							{/if}
+							{if $vo.pic2 != ''}
+							<img src="{$vo.pic2}" width="200"> 
+							{/if}
+							{if $vo.pic3 != ''}
+							<img src="{$vo.pic3}" width="200"> 
+							{/if}
+
+						</div>
+						<div class="comment count">
+							<a href="details.html#comment">评论({$vo.cNum})</a>
+							<a href="javascript:;" z="{$vo.id|checkZ=$uid}" aid="{$vo.id}" class="like"><span>点赞</span>(<i>{$vo.pNum}</i>)</a>
+						</div>
+					</div>
+				{/volist}
+			</div>
+		</div>
+	</div>
+	<script>
+		//初始化程序，同时用于ajax回调
+		function init(){
+			$.each($(".like"),function(index,value){
+				if($(this).attr("z") == 'on') {
+					$(this).css("color","#FF8C00");
+					$(this).children("span").text("已赞");
+				}	
+			});
+		}
+		//启动
+		init();
+		$(".like").click(function(){
+			id = $(this).attr("aid");
+			t = $(this);
+			//是否处于被赞状态
+			if($(this).attr("z") == "on"){
+				//取消点赞
+					t.attr("z","off");
+					//置灰
+					t.css("color","black");
+					//修改内容
+					t.children("span").text("点赞");
+				//ajax,设置新值
+				$.post("{:url('Bbs/praise')}",{id:id,z:"on"},function(e){
+					e = eval("("+e+")");
+					//点赞数量-1
+					t.children("i").text(e.pNum);
+				});
+			} else {
+				//ajax,设置新值
+				$.post("{:url('Bbs/praise')}",{id:id,z:"off"},function(e){
+					//重新点赞
+					t.attr("z","on");
+					//橙色显示
+					t.css("color","#FF8C00");
+					//内容
+					t.children("span").text("已赞");
+					e = eval("("+e+")");
+					//点赞数量+1
+					t.children("i").text(e.pNum);
+				});
+			}
+		})
+	</script>
+</body>
+</html>
