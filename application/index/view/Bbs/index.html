@@ -13,6 +13,7 @@
 				<h4 class="item-title">
 					<p><i class="layui-icon layui-icon-speaker"></i><span>分享生活中的点点滴滴，把你的故事讲给大家听</span></p>
 				</h4>
+				<div id="load">
 				{volist name='article' id='vo'}
 					<div class="item">
 						<div class="item-box  layer-photos-demo1 layer-photos-demo">
@@ -36,9 +37,11 @@
 						</div>
 					</div>
 				{/volist}
+				</div>
 			</div>
 		</div>
 	</div>
+	<input type="hidden" id="curPage" value="0">
 	<script>
 		//初始化程序，同时用于ajax回调
 		function init(){
@@ -85,6 +88,30 @@
 		})
 
 		// 流式加载
+		layui.use('flow', function(){
+			var flow = layui.flow;
+
+			flow.load({
+			elem: '#load' //流加载容器
+			,done: function(page, next){ //执行下一页的回调
+			    //简单快速获取当前页数
+			    curPage = Number($("#curPage").val())+1;
+			    //模拟翻页
+			    $("#curPage").val(curPage);
+			    //通过ajax传回值
+			    $.post("{:url('Bbs/load')}",{curPage:curPage},function(res){
+			        //开始操作
+		            setTimeout(function(){
+		                var lis = [];
+		                lis.push(res); 
+		                //可加载次数
+		                next(lis.join(''), page < {$newsPage+1});
+		            }, 500);
+			    })
+			}
+			});
+
+		});
 	</script>
 </body>
 </html>
