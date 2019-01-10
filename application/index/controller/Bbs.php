@@ -19,7 +19,7 @@ class Bbs extends Base
     	//传递到前端
     	$this->assign('article',$article);
     	//获取总数量，计算可更新次数
-    	$count = Db::table("news")->count();
+    	$count = Db::table("article")->count();
     	$page = floor($count / $limit)-1;
     	$this->assign('newsPage',$page);
         $this->assign("uid",session("User.id"));
@@ -28,13 +28,15 @@ class Bbs extends Base
     }
 
     //流加载新闻
-    public function loadNews()
+    public function load()
     {
     	$curPage = input("post.curPage");
-    	$low = $curPage * 7;
-    	$data = Db::table('news')->order("time desc")->limit($low,7)->select();
+    	$low = $curPage * 10;
+    	$data = Db::table('article')->order(['hot desc','commitTime desc'])->limit($low,10)->select();
+        $this->assign("uid",session("User.id"));
+        $this->assign('article',$data);
     	//返回最新数据
-    	exit(json_encode($data));
+    	return $this->fetch();
     }
 
     //热度算法 hackernews
