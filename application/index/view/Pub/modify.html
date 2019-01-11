@@ -5,13 +5,14 @@
 
 <!-- 个人信息 -->
 
-<form class="layui-form" lay-filter="user" method="post" enctype="multipart/form-data" style="text-align: center;" id="cMes">
+<form class="layui-form" lay-filter="user" method="post" enctype="multipart/form-data" style="text-align: center;" action="{:url('Pub/changeMes')}">
 	
 	<!-- 头像 -->
 	<div class="layui-form-item">
 		<div class="layui-input-block" style="text-align: center;">
-			<img src="{$Think.session.User.icon}" class="layui-nav-img" style="height: 80px;width: 80px;" id="icon">
-			<input type="file" name="icon"  value="{$Think.session.User.icon}" style="display: none;" id="userIcon">
+			<img src="{:session('User.icon')}" class="layui-nav-img" style="height: 80px;width: 80px;" id="icon">
+			<span id="warn" style="display: none;">图片格式不正确</span>
+			<input type="file" name="icon" value="{:session('User.icon')}" style="display: none;" id="userIcon">
 		</div>
   	</div>
 
@@ -101,8 +102,10 @@ function init(){
 
 	layui.use("form",function(){
 		var form = layui.form;
-
+		//清空
+		$("#cls").empty();
 		iid = {$Think.session.User.iid};
+		//后台获取班级数据
 		$.post("{:url('Pub/getClass')}",{iid:iid},function(e){
 			$.each(e,function(i,val){
 				clsFlag = ({$Think.session.User.cid} == i);
@@ -112,7 +115,7 @@ function init(){
 				} else {
 					$("#cls").append("<option value="+i+">"+val+"</option>");
 				}
-				
+				//重新渲染下拉框
 				form.render('select');
 			});
 		});
@@ -155,26 +158,19 @@ $("#icon").click(function(){
 				suc = true;
 			}
 		});
+		//console.log(icon);
 		if(!suc) {
-			layer.msg("图片格式不正确");
-			$(this).val('');
+			//格式错误，提示
+			$("#warn").show();
+			//$(this).val($("#icon"));
 		} else {
+			//格式正确隐藏提示
+			$("#warn").hide();
+			//将文件传递给隐藏的file
 			$("#icon").attr("src",window.URL.createObjectURL($(this)[0].files[0]));
 		}
 	});
 });
-
-//修改信息ajax提交
-$("#changeMes").click(function(){
-	$.post("{:url('Pub/changeMes')}",$("#cMes").serialize(),function(e){
-		//解析为json格式
-		e = eval("("+e+")");
-		//成功
-		layer.msg(e.msg);
-	});
-	
-	return false;
-})
 
 </script>
       

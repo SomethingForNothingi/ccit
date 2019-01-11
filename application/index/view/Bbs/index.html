@@ -17,9 +17,9 @@
 				{volist name='article' id='vo'}
 					<div class="item">
 						<div class="item-box  layer-photos-demo1 layer-photos-demo">
-							<h3><a href="details.html">{$vo.title}</a></h3>
+							<h3><a href="{:url('Bbs/details')}?id={$vo.id}">{$vo.title}</a></h3>
 							<h5>作者：<span>{$vo.uid|getUserById}</span><span style="padding-left: 30px;"></span>发布于：<span>{$vo.commitTime}</span></h5>
-							<p>{$vo.comment|checkLen=300} <a href="javascript:;">[详情]</a></p>
+							<p>{$vo.comment|checkLen=300} <a href="{:url('Bbs/details')}?id={$vo.id}">[详情]</a></p>
 							{if $vo.pic1 != ''}
 							<img src="{$vo.pic1}" width="200"> 
 							{/if}
@@ -32,7 +32,7 @@
 
 						</div>
 						<div class="comment count">
-							<a href="details.html#comment">评论({$vo.cNum})</a>
+							<a href="{:url('Bbs/')}">评论({$vo.cNum})</a>
 							<a href="javascript:;" z="{$vo.id|checkZ=$uid}" aid="{$vo.id}" class="like"><span>点赞</span>(<i>{$vo.pNum}</i>)</a>
 						</div>
 					</div>

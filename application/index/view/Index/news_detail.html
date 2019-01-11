@@ -10,9 +10,9 @@
 	<!-- main部分 -->
 	<div class="main-newsdate">
 		<div class="layui-container">
-			<p class="news"><a href="news.html">实时新闻</a> > 新闻详情</p>
+			<p class="news">新闻详情 > <a href="{:url('Index/index')}">返回首页</a></p>
 			<h1>{$data.title}</h1>
-			<p class="pushtime">发布时间：<span>{$data.time}</span></p>	
+			<p class="pushtime">发布时间：<span>{$data.time}</span><span style="margin-left: 30px;">作者：{$data.author}</span><span style="margin-left: 30px;font-size: 14px;">阅读量：{$data.read}</span></p>	
 			<p class="introBott">{$data.content}</p>
 		</div> 
 	</div>

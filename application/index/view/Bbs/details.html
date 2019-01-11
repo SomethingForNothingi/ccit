@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>详情</title>
+	{include file="Pub/header" /}
+	{load href="/static/css/bbs.css" /}
+</head>
+<body class="lay-blog" style="background: #eee;">
+	<div class="container-wrap">
+		<div class="container container-message container-details container-comment">
+			<div class="contar-wrap">
+				<div class="item">
+					<div class="item-box  layer-photos-demo1 layer-photos-demo">
+						<h3>{$article.title}</h3>
+						<h5>发布于：<span>{$article.commitTime}</span> <span style="margin-left: 30px;">作者：{$article.uid|getUserById}</span></h5>
+						<p>{$article.comment}</p>
+						
+						<div class="count layui-clear">
+							<span style="float: left;">评论 <em>{$article.cNum}</em></span>
+							<span style="float: right;" class="like" z="{$article.id|checkZ=$uid}" aid="{$article.id}"><i class="layui-icon layui-icon-praise"></i><em>{$article.pNum}</em></span>
+						</div>
+					</div>
+				</div>
+				<div class="comt layui-clear">
+							<a href="javascript:;" class="pull-left">评论</a>
+							<a href="comment.html" style="float: right;" >写评论</a>
+						</div>
+				<div id="LAY-msg-box">
+							<div class="info-item">
+								<img class="info-img" src="../res/static/images/info-img.png" alt="">
+								<div class="info-text">
+									<p class="title count">
+										<span class="name">一片空白</span>
+										<span class="info-img like"><i class="layui-icon layui-icon-praise"></i>5.8万</span>
+									</p>
+									<p class="info-intr">父爱如山，不善表达。回想十多年前，总记得父亲有个宽厚的肩膀，小小的自己跨坐在上面，越过人山人海去看更广阔的天空，那个时候期望自己有一双翅膀，能够像鸟儿一样飞得高，看得远。虽然父亲有时会和自己开玩笑，但在做错事的时候会受到严厉的训斥。父亲有双粗糙的大手掌。</p>
+								</div>
+							</div>	
+							<div class="info-item">
+								<img class="info-img" src="../res/static/images/info-img.png" alt="">
+								<div class="info-text">
+									<p class="title count">
+										<span class="name">一片空白</span>
+										<span class="info-img like"><i class="layui-icon layui-icon-praise"></i>5.8万</span>
+									</p>
+									<p class="info-intr">父爱如山，不善表达。回想十多年前，总记得父亲有个宽厚的肩膀，小小的自己跨坐在上面，越过人山人海去看更广阔的天空，那个时候期望自己有一双翅膀，能够像鸟儿一样飞得高，看得远。虽然父亲有时会和自己开玩笑，但在做错事的时候会受到严厉的训斥。父亲有双粗糙的大手掌。</p>
+								</div>
+							</div>			
+						</div>
+				<form class="layui-form" action="">
+					<div class="layui-form-item layui-form-text">
+						<textarea  class="layui-textarea"  style="resize:none" placeholder="写点什么啊"></textarea>
+					</div>
+					<div class="btnbox">
+							<a href="details.html"  id="sure">
+					  		确定
+					  	</a>
+					</div>
+				</form>
+			</div>
+
+
+		</div>
+	</div>
+	<script>
+		//初始化程序，同时用于ajax回调
+		function init(){
+			$.each($(".like"),function(index,value){
+				if($(this).attr("z") == 'on') {
+					$(this).css("color","#FF8C00");
+					$(this).children("span").text("已赞");
+				}	
+			});
+		}
+		//启动
+		init();
+	</script>
+</body>
+</html>

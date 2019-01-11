@@ -25,11 +25,10 @@ class Pub extends Base
 	//个人信息修改
 	public function changeMes(){
 		$data = (array)input("post.");
-		//dump($data);
 		if(isset($_FILES['icon']['name'])) {
 			$file = request()->file("icon");
-			$info = $file->move("./uploads");
-			$icon = "/uploads\\".$info->getSaveName();
+			$info = $file->move("./author");
+			$icon = "/author\\".$info->getSaveName();
 		    $data['icon'] = $icon;
 		    $_SESSION['think']['User']['icon'] = $data['icon'];
 		}
@@ -37,12 +36,7 @@ class Pub extends Base
 		$id = $_SESSION['think']['User']['id'];
 		//dump(session());
 		Db::table('user')->where("id=".$id)->update($data);
-		exit(json_encode(array("code"=>1,"msg"=>"修改成功")));
-	}
-
-	public function changeIcon(){
-		dump($_FILES);
-		echo "isSuccess";
+		$this->redirect("Index/index");
 	}
 
 	//安全管理界面
@@ -68,5 +62,10 @@ class Pub extends Base
 		$id = $_SESSION['think']['User']['id'];
 		session("User",null);
 		Db::table("user")->where('id='.$id)->update($data);
+	}
+
+	//修改图片
+	public function changeImg(){
+
 	}
 }
