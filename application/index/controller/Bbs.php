@@ -78,11 +78,20 @@ class Bbs extends Base
         exit(json_encode(array('pNum'=>$data['pNum'])));
     }
 
-    // public function test()
-    // {
-    //     $redis = new Redis();
-    //     //$redis -> sadd("article1","11");
-    //     $this->assign("article","article1");
-    //     return $this->fetch();
-    // }
+    //论坛详情页
+    public function details()
+    {
+        $id = input("get.id");
+        $article = Db::table('article')->where('id='.$id)->find();
+        $this->assign('uid',session('User.id'));
+        $this->assign('article',$article);
+        return $this->fetch();
+    }
+
+    public function comment()
+    {
+        $id = input("get.id");
+        $this->assign('uid',session('User.id'));
+        return $this->fetch();
+    }
 }
